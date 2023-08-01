@@ -8,13 +8,32 @@
 <body>
     <h1> chat app</h1>
     <div id="app">
-        <chat-app></chat-app>
+        <div id="messages"></div>
+        <input type="text" id="message" placeholder="Enter Message">
+        <button id="sendBtn">Send</button>
     </div>
 
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io('http://localhost:3000');
+        const socket = io();
+        const messageInput = document.getElementById('message');
+        const sendBtn = document.getElementById('sendBtn');
+        const messages = document.getElementById('messages');
+
+
+        
+        socket.on('message', (data) => {
+            console.log(data);
+            messages.innerHTML += `<div>${data}</div>`;
+        }
+        );
+
+        sendBtn.addEventListener('click', () => {
+            const message = messageInput.value;
+            console.log(message);
+            socket.emit('message', message);
+        });
     </script>
 </body>
 </html>
