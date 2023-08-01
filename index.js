@@ -8,6 +8,16 @@ app.use(express.static(__dirname + '/public'));
 
 const io = require('socket.io')(server);
 
+// Socket.io
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+        io.emit('user disconnected');
+    });
+});
+
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
